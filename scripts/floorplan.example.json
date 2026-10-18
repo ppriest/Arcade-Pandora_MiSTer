@@ -1,0 +1,17 @@
+{"groups": [
+  {"name": "Main CPU 68000",  "match": "u_core\\|u_cpu",                 "color": "#e6194b"},
+  {"name": "Sound FG-2",      "match": "u_core\\|u_snd2",                "color": "#f58231"},
+  {"name": "Sound FG-3",      "match": "u_core\\|u_snd3",                "color": "#ffe119"},
+  {"name": "Tilemaps",        "match": "u_core\\|layer\\[\\d\\]\\.u_tm", "color": "#3cb44b"},
+  {"name": "Line buffers",    "match": "_lb$|_lb\\|",                    "color": "#aaffc3"},
+  {"name": "Sprites",         "match": "u_core\\|(u_spr|u_list)",        "color": "#42d4f4"},
+  {"name": "SDRAM + buffer",  "match": "u_core\\|(u_sdram|u_sdbuf)",     "color": "#4363d8"},
+  {"name": "Work RAM",        "match": "u_core\\|workram",               "color": "#911eb4"},
+  {"name": "VRAM",            "match": "u_core\\|vram",                  "color": "#f032e6"},
+  {"name": "Palette",         "match": "u_core\\|pal_",                  "color": "#fabed4"},
+  {"name": "Core other",      "match": "^emu\\|u_core",                  "color": "#bfef45"},
+  {"name": "CRT V-Size",      "match": "u_crt_vsize",                    "color": "#9a6324"},
+  {"name": "CRT Adjust",      "match": "u_crt_adjust",                   "color": "#dcbeff"},
+  {"name": "Video mixer/scaler", "match": "^emu\\|(arcade_video|video_freak|screen_rotate_two)", "color": "#808000"},
+  {"name": "hps_io",          "match": "^emu\\|hps_io",                  "color": "#469990"}
+]}

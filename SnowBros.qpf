@@ -1,0 +1,4 @@
+QUARTUS_VERSION = "17.0"
+# SnowBros_stp is the instrumented revision (ISSP probes, OSD debug page); SnowBros the release.
+PROJECT_REVISION = "SnowBros_stp"
+PROJECT_REVISION = "SnowBros"
