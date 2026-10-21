@@ -18,7 +18,6 @@ for the DE10-nano.
 - [Installation](#installation)
 - [Controls](#controls)
 - [Status](#status)
-  - [Features](#features)
   - [Todo](#todo)
   - [Resource usage](#resource-usage)
 - [AI Attestation](#ai-attestation)
@@ -232,30 +231,6 @@ Known issues:
 `docs/MAME_KLUDGES.md` lists what is taken from MAME as behaviour and what is known not to be
 right. `docs/HACKS.md` lists this core's own approximations. `docs/ROADMAP.md` is the plan and its
 progress; `docs/LESSONS_LEARNED.md` is what it cost.
-
-### Features
-
-* DIP switches from the `.mra` (`DIP;` in the OSD): done, defaults as MAME's; not play-tested
-* Inputs: done, the three port layouts of the driver; a coin tested on the board, the rest not
-* CRT Adjust (H-Position, V-Shift, H-Size, V-Size): present; not yet checked on a CRT
-* HDMI scaling (integer scale, crop, crop offset): present
-* HDMI rotation (Orientation Off, CW, CCW, for a vertical monitor; analog stays native): done,
-  checked on the board
-* Flip screen, HDMI and analog, from the OSD or the DIP (fake DIP where the game has none):
-  present; not yet checked against the unflipped frame rotated 180 degrees
-* HDMI-only options hidden under direct video: done
-* Peripheral menus shown only for games that use them: n/a
-* Rotary joysticks (Ikari Warriors controls, GRS keystroke mode), where used: n/a
-* Light guns: mouse, analog stick and synthetic crosshair, where used: n/a
-* Audio mix (Mono, None, 25%, 50%): done
-* Hiscore saving: not supported
-* NVRAM / EEPROM saved to the `.nvm` file: n/a (none on these boards)
-* Fast ROM loading via DDR: done, used for every set on the board
-* Pause (with CPU suspended): present (68000 and Z80 stop); not yet checked on the board
-* Sound: done, both boards and yutnori's two M6295, matched against MAME and judged by ear
-* Savestates (optional): not yet; the state file and its capture exist in the benches
-  (`docs/STATE.md`)
-* Cheats (optional): not yet
 
 ### Todo
 
