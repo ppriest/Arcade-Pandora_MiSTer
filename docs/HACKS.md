@@ -21,14 +21,11 @@ Rules:
 
 | What | Where | Why it is a hack | What would make it correct | Evidence | Severity |
 |---|---|---|---|---|---|
-| {{ONE_LINE_WHAT}} | `{{FILE}}:{{LINE}}` | {{WHY}} | {{FIX}} | {{EVIDENCE}} | {{SEVERITY}} |
-
-<!-- Examples of the shape, from sibling cores:
-| Sound mailbox is a stub that answers the power-on test | `rtl/gx_snd_stub.sv` | No sound CPU yet; the stub returns the reply the test expects and a heartbeat | Phase 3: the real sound board | The game's RAM check passes with it; nothing else is exercised | visible |
-| Sound-command spin of 800 CPU clocks after a latch write | `rtl/cpu/…_bus.sv:NNN` | Copies MAME's 40 us wait; the real board's mechanism is unknown | A measurement of the latch on hardware | Without it the second byte overwrote the first (commit) | latent |
-| Sound CPU reset held 1,024 clocks | `rtl/….sv:NNN` | MAME's pulse is zero-length; the T80 needs to see it | The measured reset length | A PCB measurement says about one second | latent |
-| Screen timing from one game used for every game | `rtl/video/…crtc.sv` | MAME declares 60 Hz with no comment; the one PCB-verified rate is used for all | Per-game timing from PCB measurement | 0.043% from the verified rate | visible |
--->
+| Sync positions and widths | `rtl/video/video_timing.sv` (`HSYNC0`/`HSYNC1`, `VSYNC0`/`VSYNC1`) | MAME gives no horizontal timing or sync; hsync is pixels 276-303 and vsync lines 248-250, chosen to sit inside the blanking | A PCB measurement of sync position and width | unverified | visible (picture position on a CRT; CRT Adjust moves it) |
+| Horizontal total 354 | `rtl/video/video_timing.sv` (`HTOTAL`) | Chosen with the user so 16 MHz / 3 and MAME's 262 lines give 57.50 Hz; the PCB's 15.68 kHz would be about 340 x 273 | A PCB measurement of the horizontal total | snowbros.cpp 35-36 against 1945-1948 | visible (line rate 15.07 kHz) |
+| Bench stands in for the Z80 | `sim/state_tb/tb_state.sv`, `sim/boot_tb/tb_boot.sv` | 0x300000 reads a constant (the captured latch, or 0x03) | The sound board in the benches (Phase 3) | MAME read 0x03 once in the first 15 million accesses of snowbros | tooling |
+| SDRAM_CLK at 317 degrees, 48 MHz | `rtl/pll/pll_0002.v` `phase_shift1` | Scaled from two sibling cores' estimates with the same controller, not measured here | A phase sweep on hardware: read margin at several shifts | unverified | visible if wrong |
+| finalttr's M6295 at 1 MHz | `rtl/snowbros_core.sv` (`s_oki`) | MAME sets 999900 Hz (snowbros.cpp 2150); the 1 MHz enable is 100 ppm fast | A phase accumulator for that set | unverified by ear | latent (pitch 0.01% high) |
 
 ## Removed
 

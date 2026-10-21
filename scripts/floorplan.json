@@ -1,0 +1,17 @@
+{"groups": [
+  {"name": "Main CPU 68000",     "match": "u_core\\|u_cpu",                                      "color": "#e6194b"},
+  {"name": "MCU 87C52",          "match": "u_core\\|u_mcu",                                      "color": "#ffe119"},
+  {"name": "SemiCom sound",      "match": "u_core\\|u_semi_sound|u_sdram\\|u_oki_cache",         "color": "#f58231"},
+  {"name": "Toaplan sound",      "match": "u_core\\|u_sound",                                    "color": "#9a6324"},
+  {"name": "Yutnori sound",      "match": "u_core\\|u_yut_sound|u_sdram\\|u_okim_cache",         "color": "#ffd8b1"},
+  {"name": "Pandora sprites",    "match": "u_core\\|u_video\\|(u_line|u_resolve|u_rom|list_ram|spr_ram)", "color": "#42d4f4"},
+  {"name": "Palette",            "match": "u_core\\|u_video\\|pal_",                             "color": "#fabed4"},
+  {"name": "Video timing",       "match": "u_core\\|u_video",                                    "color": "#aaffc3"},
+  {"name": "Work RAM + protdata","match": "u_core\\|(wram_|prot_)",                              "color": "#911eb4"},
+  {"name": "Core other",         "match": "^emu\\|u_top\\|u_core",                               "color": "#bfef45"},
+  {"name": "SDRAM",              "match": "u_top\\|u_sdram",                                     "color": "#4363d8"},
+  {"name": "ROM loader",         "match": "^emu\\|(u_rom_loader|u_ldr_ddram)",                   "color": "#fffac8"},
+  {"name": "CRT Adjust",         "match": "^emu\\|crt_chain",                                    "color": "#dcbeff"},
+  {"name": "Video mixer/scaler", "match": "^emu\\|(arcade_video|video_freak|screen_rotate_two)", "color": "#808000"},
+  {"name": "hps_io",             "match": "^emu\\|(hps_io|u_mame_keys)",                         "color": "#469990"}
+]}

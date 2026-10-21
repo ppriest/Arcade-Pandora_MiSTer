@@ -1,52 +1,27 @@
 {
-  "_comment": "Core-specific. The main CPU's view of the machine, from the MAME driver's address map. Read by mame_capture.py and write_timing.py. Addresses are hex strings, inclusive.",
+  "_comment": "Core-specific. The 68000's view of the Snow Bros board, from snowbros.cpp snowbros_map (lines 182-198); hyperpac_map (341-356) has the same palette and sprite windows and 64 KB of work RAM. Read by mame_capture.py and write_timing.py. Addresses are hex strings, inclusive. Pandora sprite RAM is read through spriteram_lsb_r, one byte per word mirrored to both lanes (kan_pand.cpp).",
   "cpu": ":maincpu",
   "space": "program",
   "bus_bytes": 2,
   "big_endian": true,
   "read": {
-    "workram": [
-      "0x000000",
-      "0x00ffff"
-    ]
+    "workram": ["0x100000", "0x103fff"],
+    "palette": ["0x600000", "0x6001ff"],
+    "spriteram": ["0x700000", "0x701fff"]
   },
   "wtap": {
-    "vregs": [
-      "0x000000",
-      "0x00001f"
-    ]
+    "flip": ["0x400000", "0x400001"],
+    "soundlatch": ["0x300000", "0x300001"]
   },
-  "sweep": [
-    "workram",
-    "vregs"
-  ],
+  "prev": {},
+  "sweep": ["spriteram", "palette", "flip", "soundlatch"],
   "trace": {
     "addr_hi": "0xffffff",
-    "io": [
-      "0x000000",
-      "0x000000"
-    ],
-    "vectors": [
-      "0x000000",
-      "0x000000"
-    ],
-    "ipl": {
-      "reg": "SR",
-      "shift": 8,
-      "mask": 7
-    },
-    "rom": [
-      [
-        "0x000000",
-        "0x0fffff"
-      ]
-    ],
-    "ram": [
-      [
-        "0x100000",
-        "0x10ffff"
-      ]
-    ]
+    "io": [["0x200000", "0x200001"], ["0x300000", "0x300001"], ["0x400000", "0x400001"], ["0x500000", "0x500005"], ["0x800000", "0xa00001"]],
+    "vectors": ["0x000000", "0x0003ff"],
+    "ipl": {"reg": "SR", "shift": 8, "mask": 7},
+    "rom": [["0x000000", "0x03ffff"]],
+    "ram": [["0x100000", "0x10ffff"], ["0x600000", "0x6001ff"], ["0x700000", "0x701fff"]]
   },
   "inputs": {
     "coin": "Coin 1",

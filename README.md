@@ -1,16 +1,15 @@
-# {{HARDWARE_NAME}} core for MiSTer
+# Snow Bros. / SemiCom Pandora core for MiSTer
 
-A MiSTer FPGA core for {{MANUFACTURER}}'s {{HARDWARE_NAME}} arcade hardware (MAME's
-`{{MAME_DRIVER}}`), built with Quartus Prime 17.0.2 Lite for the DE10-nano.
-
-**Status: {{STATUS_ONE_LINE}}.**
+A MiSTer FPGA core for Toaplan's Snow Bros. hardware and SemiCom's boards built on it, all using
+Kaneko's Pandora sprite chip (MAME's `kaneko/snowbros.cpp`), built with Quartus Prime 17.0.2 Lite
+for the DE10-nano.
 
 ## Contents
 
 - [History](#history)
 - [Games](#games)
   - [Supported](#supported)
-  - [Not yet](#not-yet)
+  - [Alternatives](#alternatives)
   - [Out of scope for now](#out-of-scope-for-now)
 - [Hardware](#hardware)
   - [Video timing](#video-timing)
@@ -30,101 +29,205 @@ A MiSTer FPGA core for {{MANUFACTURER}}'s {{HARDWARE_NAME}} arcade hardware (MAM
 
 ## History
 
-{{HISTORY}}
-<!-- One paragraph per release or milestone, newest first. Name the commit for anything that
-     ran on hardware. "No release yet" is a valid entry. -->
+**`Arcade-Pandora_20261021.rbf`**
+- Games on the SnowBros hardware - mostly bootlegs/Korean title by the likes of Semicom who cloned the SnowBros hw.
 
 ## Games
 
-{{SCOPE_ONE_PARAGRAPH}}
-<!-- Which board types / machine configs the core targets, how many sets, SDRAM size they need. -->
+The Toaplan board (snowbros, toto) and the SemiCom boards derived from it: one 68000 memory map
+with small variants, one screen, the Pandora sprite chip, and two sound boards (Z80 + YM3812, or
+Z80 + YM2151 + M6295). SemiCom's protection is either the dumped 87C52 MCU, run on the core, or
+MAME's 512-byte `protdata` image copied into work RAM at reset. The largest set is 3.3 MB.
 
 ### Supported
 
-Sets with an `.mra` in `releases/`. {{WHICH_HAVE_RUN_ON_HARDWARE}}
+Sets with an `.mra` in `releases/`. Every one has run on the DE10-nano to attract mode, and the
+author has judged picture and sound against MAME.
 
-| Name | Year | Manufacturer | {{PER_CORE_COLUMNS}} | Notes |
+| Name | Year | Manufacturer | Board | Notes |
 |-|-|-|-|-|
-{{SUPPORTED_SETS_TABLE}}
+| Snow Bros. - Nick & Tom (set 1) | 1990 | Toaplan | Toaplan | |
+| Come Back Toto | 1996 | SoftClub | Toaplan | ROM bit swap at download |
+| Final Tetris | 1993 | Jeil Computer System | SemiCom, finalttr | sound board at 3.579545 MHz |
+| Hyper Pacman | 1995 | SemiCom | SemiCom, MCU | the dumped 87C52 runs on the core |
+| Cookie & Bibi 2 (English, set 1) | 1996 | SemiCom | SemiCom, MCU | |
+| Toppy & Rappy | 1996 | SemiCom | SemiCom, protdata | |
+| Cookie & Bibi 3 | 1997 | SemiCom | SemiCom, protdata | constant read at 0x200000 |
+| Puzzle Break (set 1) | 1997 | SemiCom / Tirano | SemiCom, protdata | background pen 0xC0 |
+| Suhoseong (Korea) | 1997 | SemiCom | SemiCom, protdata | its own input layout, one player |
+| Twinkle (set 1) | 1997 | SemiCom / Tirano | SemiCom, protdata | |
+| New HyperMan (3-in-1 with Cookie & Bibi & HyperMan) (set 1) | 1998 | SemiCom / XESS | SemiCom, protdata | |
+| Macheonlu (Korea) | 1999 | SemiCom / AceVer | SemiCom, protdata | |
+| Puzzle Express More More (Korea) | 1999 | SemiCom / Exit | SemiCom, protdata | |
+| Puzzle Express More More Plus | 1999 | SemiCom / Exit | SemiCom, protdata | |
+| Puzzle King (PacMan 2, Tetris, HyperMan 2, Snow Bros.) | 2002 | K1 Soft | SemiCom, 4in1 | ROM bit swap and sound ROM reorder at download |
+| Sutjaro Haeyo Deluxe (Korea) | 1996 | SemiCom | SemiCom, protdata | MAME's ROM patch, as `<patch>` in the `.mra`; `MACHINE_NOT_WORKING` in MAME |
+| Gwasuwon (Korea) | 1997 | SemiCom / DMD | SemiCom, protdata | as above |
+| Puzzle Yutnori (Korea) | 1999 | Nunal | Yutnori | its own map; two M6295 driven as MAME's stand-in for the undumped PIC |
 
-### Not yet
+### Alternatives
 
-In-scope sets the RTL does not take yet, and why.
+Clones, in `releases/_alternatives/`, generated from MAME's merged parent zips (each `.mra` also
+names the clone's own zip, for split sets). Each image is identical to `ROM_START`'s, on the
+parent's board; not yet run on the DE10-nano.
 
-| Name | Why |
+| Name | Parent |
 |-|-|
-{{NOT_YET_TABLE}}
+| Snow Bros. - Nick & Tom (set 2, set 3, set 4, Japan, Dooyong license) | snowbros |
+| Hyper Pacman (bootleg) | hyperpac, without the MCU |
+| Cookie & Bibi 2 (English, set 2) | cookbib2, MCU |
+| Cookie & Bibi 2 (English, set 3), (English / Korean) | cookbib2, on the protdata board |
+| Puzzle Break (set 2) | pzlbreak |
+| Twinkle (set 2) | twinkle |
+| New HyperMan (3-in-1 with Cookie & Bibi & HyperMan) (set 2) | 3in1semi |
 
 ### Out of scope for now
 
 | MAME description | Why |
 |-|-|
-{{OUT_OF_SCOPE_TABLE}}
-<!-- Reasons that count: MACHINE_NOT_WORKING in MAME, a device MAME lacks, ROM set larger than the
-     SDRAM module, a second monitor, a bootleg with different sound hardware. -->
+| The Winter Bobble, Snow Bros. (Winter Bobble hardware), Honey Doll, Twin Adventure, Multi Game '96, Snow Bros. 3, Ball Boy | bootleg video boards: other sprite formats, an 8bpp background layer, and for Snow Bros. 3 a sound MCU MAME emulates at a high level because it is undumped |
 
 ## Hardware
 
 | Chip | Function | Status |
 |-|-|-|
-{{CHIP_TABLE}}
-<!-- One row per chip. Status says where the RTL came from (written here / vendored from X with
-     changes / MAME transcription) and what it has been checked against. -->
+| MC68000, 8 MHz (Toaplan) or 12 MHz (SemiCom) | main CPU | TG68K.C, vendored from the KonamiGX core; checked against MAME from restored states |
+| Z80, 6 MHz or 4 MHz | sound CPU | T80, vendored from the Fuuki core; checked through the sound boards' chip-write traces |
+| YM3812 | Toaplan FM | jtopl2 (jotego); chip writes match MAME |
+| YM2151 | SemiCom FM | jt51 (jotego); chip writes match MAME |
+| OKI M6295 | SemiCom ADPCM | jt6295 (jotego); commands match MAME |
+| PIC (undumped) | yutnori protection and sound control | MAME's high-level stand-in (mamedev/mame#16478) in RTL: the protection reply and a command sequencer in front of two jt6295; sample starts and stops match MAME's |
+| 87C52 | hyperpac and cookbib2 protection MCU | jt8052 (jotego), running the dumped program; benched in the DreamWorld core, here checked by hyperpac and cookbib2 running on the board |
+| Kaneko Pandora | sprites | written here from `kan_pand.cpp`; a per-line engine fed from the list fixed at vblank, pixel-exact against MAME |
 
 ### Video timing
 
-{{VIDEO_TIMING}}
-<!-- Dot clock, dots per line, lines per frame, the resulting line and frame rates, the visible
-     area, and where the numbers come from (CRTC registers, MAME set_raw, a PCB measurement). Say
-     if MAME's declared rate differs. -->
+Pixel clock 48 MHz / 9 = 5.333 MHz, 354 dots a line, 262 lines: 15.07 kHz, 57.50 Hz. Visible
+256 x 224 (rows 16-239). MAME gives 57.5 Hz and 262 lines (`set_refresh_hz`, `set_size`) but no
+dot clock or horizontal total. The 354 dots were chosen to give MAME's rate with MAME's line count
+(`docs/HACKS.md`). The PCB notes' 15.68 kHz line rate would mean about 273 lines
+(`docs/MAME_KLUDGES.md`).
 
 ### Floorplan
 
-Where the logic sits on the Cyclone V, read from the compiled design with
-`scripts/floorplan.py` (blocks defined in `scripts/floorplan.json`). One cell per LAB, M10K or DSP
-site, coloured by the block owning most of it, brighter when fuller. The thin columns are M10K and
-DSP; the empty area at the top right is the HPS; grey is the MiSTer framework. LUT counts are
-combinational cells, two per ALM.
+The release revision at `459c954`, fitted Oct 21 2026 (`scripts/floorplan.py`; per-block counts in
+`docs/floorplan/Pandora_groups.md`):
 
-![Floorplan of SnowBros](docs/floorplan/SnowBros.png)
+![floorplan](docs/floorplan/Pandora.png)
 
 ## Screenshots
 
-### {{GAME}}
+From the DE10-nano.
 
-![{{set}} title](docs/screenshots/{{set}}/title.png)
+**Snow Bros. - Nick & Tom** (`snowbros`)
+
+<img src="docs/screenshots/snowbros/20261021_205614-screen.png" width="256" alt="snowbros"> <img src="docs/screenshots/snowbros/20261021_205619-screen.png" width="256" alt="snowbros"> <img src="docs/screenshots/snowbros/20261021_205656-screen.png" width="256" alt="snowbros">
+
+**Come Back Toto** (`toto`)
+
+<img src="docs/screenshots/toto/20261021_204802-screen.png" width="256" alt="toto"> <img src="docs/screenshots/toto/20261021_204815-screen.png" width="256" alt="toto">
+
+**Final Tetris** (`finalttr`)
+
+<img src="docs/screenshots/finalttr/20261021_205009-screen.png" width="256" alt="finalttr"> <img src="docs/screenshots/finalttr/20261021_205017-screen.png" width="256" alt="finalttr">
+
+**Hyper Pacman** (`hyperpac`)
+
+<img src="docs/screenshots/hyperpac/20261021_205057-screen.png" width="256" alt="hyperpac"> <img src="docs/screenshots/hyperpac/20261021_205109-screen.png" width="256" alt="hyperpac">
+
+**Cookie & Bibi 2** (`cookbib2`)
+
+<img src="docs/screenshots/cookbib2/20261021_204835-screen.png" width="256" alt="cookbib2"> <img src="docs/screenshots/cookbib2/20261021_204850-screen.png" width="256" alt="cookbib2">
+
+**Toppy & Rappy** (`toppyrap`)
+
+<img src="docs/screenshots/toppyrap/20261021_205838-screen.png" width="256" alt="toppyrap"> <img src="docs/screenshots/toppyrap/20261021_205841-screen.png" width="256" alt="toppyrap"> <img src="docs/screenshots/toppyrap/20261021_205853-screen.png" width="256" alt="toppyrap">
+
+**Cookie & Bibi 3** (`cookbib3`)
+
+<img src="docs/screenshots/cookbib3/20261021_204909-screen.png" width="256" alt="cookbib3"> <img src="docs/screenshots/cookbib3/20261021_204918-screen.png" width="256" alt="cookbib3"> <img src="docs/screenshots/cookbib3/20261021_204931-screen.png" width="256" alt="cookbib3"> <img src="docs/screenshots/cookbib3/20261021_204946-screen.png" width="256" alt="cookbib3">
+
+**Puzzle Break** (`pzlbreak`)
+
+<img src="docs/screenshots/pzlbreak/20261021_205218-screen.png" width="256" alt="pzlbreak"> <img src="docs/screenshots/pzlbreak/20261021_205224-screen.png" width="256" alt="pzlbreak">
+
+**Suhoseong** (`suhosong`)
+
+<img src="docs/screenshots/suhosong/20261021_205716-screen.png" width="256" alt="suhosong">
+
+**Twinkle** (`twinkle`)
+
+<img src="docs/screenshots/twinkle/20261021_205914-screen.png" width="256" alt="twinkle"> <img src="docs/screenshots/twinkle/20261021_205931-screen.png" width="256" alt="twinkle">
+
+**New HyperMan (3-in-1)** (`3in1semi`)
+
+<img src="docs/screenshots/3in1semi/20261020_204944-screen.png" width="256" alt="3in1semi"> <img src="docs/screenshots/3in1semi/20261021_205200-screen.png" width="256" alt="3in1semi">
+
+**Macheonlu** (`mcheonru`)
+
+<img src="docs/screenshots/mcheonru/20261021_205129-screen.png" width="256" alt="mcheonru"> <img src="docs/screenshots/mcheonru/20261021_205138-screen.png" width="256" alt="mcheonru">
+
+**Puzzle Express More More** (`moremore`)
+
+<img src="docs/screenshots/moremore/20261021_205242-screen.png" width="256" alt="moremore"> <img src="docs/screenshots/moremore/20261021_205250-screen.png" width="256" alt="moremore"> <img src="docs/screenshots/moremore/20261021_205340-screen.png" width="256" alt="moremore">
+
+**Puzzle Express More More Plus** (`moremorp`)
+
+<img src="docs/screenshots/moremorp/20261021_205414-screen.png" width="256" alt="moremorp"> <img src="docs/screenshots/moremorp/20261021_205419-screen.png" width="256" alt="moremorp">
+
+**Puzzle King** (`4in1boot`)
+
+<img src="docs/screenshots/4in1boot/20261021_205500-screen.png" width="256" alt="4in1boot"> <img src="docs/screenshots/4in1boot/20261021_205511-screen.png" width="256" alt="4in1boot"> <img src="docs/screenshots/4in1boot/20261021_205513-screen.png" width="256" alt="4in1boot">
+
+**Sutjaro Haeyo Deluxe** (`sutjarod`)
+
+<img src="docs/screenshots/sutjarod/20261021_205741-screen.png" width="256" alt="sutjarod"> <img src="docs/screenshots/sutjarod/20261021_205751-screen.png" width="256" alt="sutjarod">
+
+**Gwasuwon** (`gwasu`)
+
+<img src="docs/screenshots/gwasu/20261021_205031-screen.png" width="256" alt="gwasu"> <img src="docs/screenshots/gwasu/20261021_205037-screen.png" width="256" alt="gwasu">
+
+**Puzzle Yutnori** (`yutnori`)
+
+<img src="docs/screenshots/yutnori/20261021_205531-screen.png" width="256" alt="yutnori"> <img src="docs/screenshots/yutnori/20261021_205557-screen.png" width="256" alt="yutnori">
 
 ## Installation
 
-{{SDRAM_REQUIREMENT}}
-<!-- e.g. "A 32 MB SDRAM module is required." -->
+An SDRAM module is required (the largest set loads 3.3 MB).
 
 * Take the latest `*.rbf` from `releases/` and put it in `_Arcade/cores`, renamed to drop the
-  `Arcade-` prefix (`Arcade-SnowBros_YYYYMMDD.rbf` becomes `SnowBros_YYYYMMDD.rbf`). MiSTer launches
-  the highest-sorting match for `<rbf>SnowBros</rbf>`, and a `SnowBros_*.rbf` sorts above every
-  `Arcade-SnowBros_*.rbf`
-* Take the `*.mra` files and the `_alternatives` folder from `releases/` and put them in `_Arcade`
-  (or a subdirectory starting with an underscore, e.g. `_Arcade/_{{HARDWARE_NAME}}`)
-* Put the MAME merged or split ROM sets in `games/mame`{{BIOS_NOTE}}
+  `Arcade-` prefix (`Arcade-Pandora_YYYYMMDD.rbf` becomes `Pandora_YYYYMMDD.rbf`). The `.mra`
+  files name `<rbf>Pandora</rbf>`, not `SnowBros`: MiSTer matches `<rbf>` as a case-insensitive
+  prefix, and `SnowBros` would load the Coin-Op Collection's `snowbros_mister` core instead
+* Take the `*.mra` files from `releases/` and put them in `_Arcade` (or a subdirectory starting
+  with an underscore, e.g. `_Arcade/_Pandora`)
+* Put the MAME merged or split ROM sets in `games/mame`. A set whose zip is missing boots to a
+  black screen
 
 To run a development build instead: `python scripts/build_staged.py`, then `python scripts/deploy.py`
 with a `mister.env` (see `scripts/deploy.py`).
 
 ## Controls
 
-{{CONTROLS}}
+The core's joystick buttons are Button 1-6, Start, Coin and Pause. Each `.mra` names the buttons
+its game uses:
 
-Keyboard, MAME's defaults: arrows / R F D G, buttons LCtrl LAlt Space LShift Z X / A S Q W E,
-Start 1 / 2, Coin 5 / 6; F2 service switch, 9 / 0 service coins, P pause.
-<!-- The J1 line's button names in order, what Start/Coin/Pause/Service map to, and per-game
-     exceptions. Must agree with the .mra <buttons> positions. Light gun / trackball / mouse
-     options if any. -->
+| Game | Buttons |
+|-|-|
+| snowbros, toto | Shoot, Jump |
+| hyperpac, cookbib2, cookbib3, toppyrap, twinkle | Jump, Fire |
+| finalttr | Rotate, Rotate Back |
+| pzlbreak | Launch |
+| 3in1semi, mcheonru, moremore, moremorp, 4in1boot | A, B (compilations; the buttons mean different things per game) |
+| suhosong | High, Low, Hit / Double Up, Stand / Take, Bet / Raise; Start is its Button 5 |
+| sutjarod, gwasu, yutnori | A, B, C, until named from play |
+
+Keyboard, MAME's defaults: arrows / R F D G, buttons 1-4 LCtrl LAlt Space LShift / A S Q W,
+Start 1 / 2, Coin 5 / 6, P pause. suhosong's fifth button is on the pad only.
 
 ## Status
 
 Known issues:
-{{KNOWN_ISSUES}}
-<!-- Bulleted. Bold the ones a player would notice first. -->
 
 `docs/MAME_KLUDGES.md` lists what is taken from MAME as behaviour and what is known not to be
 right. `docs/HACKS.md` lists this core's own approximations. `docs/ROADMAP.md` is the plan and its
@@ -132,68 +235,89 @@ progress; `docs/LESSONS_LEARNED.md` is what it cost.
 
 ### Features
 
-<!-- Keep every line; mark each done / not yet / n-a so the gaps are visible. -->
-
-* DIP switches from the `.mra` (`DIP;` in the OSD): {{DIPS_STATUS}}
-* Inputs: {{INPUTS_STATUS}}
-* CRT Adjust (H-Position, V-Shift, H-Size, V-Size): {{CRT_ADJUST_STATUS}}
-* HDMI scaling (integer scale, crop, crop offset): {{SCALING_STATUS}}
-* HDMI rotation (orientation): {{ROTATION_STATUS}}
-* Flip screen, HDMI and analog, from the OSD or the DIP (fake DIP where the game has none): {{FLIP_STATUS}}
-* HDMI-only options hidden under direct video: {{DIRECT_VIDEO_STATUS}}
-* Peripheral menus shown only for games that use them: {{PERIPHERAL_MENUS_STATUS}}
-* Rotary joysticks (Ikari Warriors controls, GRS keystroke mode), where used: {{ROTARY_STATUS}}
-* Light guns: mouse, analog stick and synthetic crosshair, where used: {{GUN_STATUS}}
-* Audio mix (Mono, None, 25%, 50%): {{AUDIO_MIX_STATUS}}
-* Hiscore saving (`hiscore.v`, with autosave): {{HISCORE_STATUS}}
-* NVRAM / EEPROM saved to the `.nvm` file: {{NVRAM_STATUS}}
-* Fast ROM loading via DDR: {{DDR_LOAD_STATUS}}
-* Pause (with CPU suspended): {{PAUSE_STATUS}}
-* Sound: {{SOUND_STATUS}}
-* Savestates (optional): {{SAVESTATE_STATUS}}
-* Cheats (optional): {{CHEATS_STATUS}}
+* DIP switches from the `.mra` (`DIP;` in the OSD): done, defaults as MAME's; not play-tested
+* Inputs: done, the three port layouts of the driver; a coin tested on the board, the rest not
+* CRT Adjust (H-Position, V-Shift, H-Size, V-Size): present; not yet checked on a CRT
+* HDMI scaling (integer scale, crop, crop offset): present
+* HDMI rotation (Orientation Off, CW, CCW, for a vertical monitor; analog stays native): done,
+  checked on the board
+* Flip screen, HDMI and analog, from the OSD or the DIP (fake DIP where the game has none):
+  present; not yet checked against the unflipped frame rotated 180 degrees
+* HDMI-only options hidden under direct video: done
+* Peripheral menus shown only for games that use them: n/a
+* Rotary joysticks (Ikari Warriors controls, GRS keystroke mode), where used: n/a
+* Light guns: mouse, analog stick and synthetic crosshair, where used: n/a
+* Audio mix (Mono, None, 25%, 50%): done
+* Hiscore saving: not supported
+* NVRAM / EEPROM saved to the `.nvm` file: n/a (none on these boards)
+* Fast ROM loading via DDR: done, used for every set on the board
+* Pause (with CPU suspended): present (68000 and Z80 stop); not yet checked on the board
+* Sound: done, both boards and yutnori's two M6295, matched against MAME and judged by ear
+* Savestates (optional): not yet; the state file and its capture exist in the benches
+  (`docs/STATE.md`)
+* Cheats (optional): not yet
 
 ### Todo
 
-- [ ] {{TODO_ITEM}}
+- [ ] Button names for sutjarod, gwasu and yutnori
+- [ ] The bootleg video boards (roadmap, Phases 5b and 5c)
+- [ ] Savestates
 
 ### Resource usage
 
-{{WHICH_BUILD}} on the DE10-nano's Cyclone V 5CSEBA6, speed grade 7, {{TIMING_ONE_LINE}}:
+Release revision `Pandora` at `459c954`, default seed, on the DE10-nano's Cyclone V 5CSEBA6,
+speed grade 7; every clock meets timing, `clk_sys` with +4.454 ns of setup slack, the worst the
+HDMI PLL's with +0.332 ns:
 
 | resource | used | available |
 | --- | --- | --- |
-| Logic (ALMs) | {{ALMS}} | 41,910 |
-| Block memory bits | {{BITS}} | 5,662,720 |
-| RAM blocks | {{M10K}} | 553 |
-| DSP blocks | {{DSP}} | 112 |
-| PLLs | {{PLLS}} | 6 |
+| Logic (ALMs) | 19,393 | 41,910 |
+| Block memory bits | 1,504,522 | 5,662,720 |
+| RAM blocks | 241 | 553 |
+| DSP blocks | 52 | 112 |
+| PLLs | 3 | 6 |
 
-<!-- Name the commit and the revision the numbers came from. One line on which resource is the
-     one to watch. -->
+Logic, at 46%, is the most used.
 
 ## AI Attestation
 
-This core is being developed with heavy use of a frontier coding assistant. {{AUTHOR_FAMILIARITY}}
+This core is being developed with heavy use of a frontier coding assistant, which wrote the code
+and the benches under the author's direction. The author made the hardware checks: every set's
+picture and sound on the board.
 
 ## Verification
 
 Not PCB-validated. MAME is the accuracy reference, with its own acknowledged uncertainties noted
 where they matter.
 
-* {{VERIFICATION_BULLET}}
-<!-- One bullet per thing that was diffed against MAME, with the count: CPU trace (N accesses),
-     video frames (N pixels of N), SDRAM image readback, .mra byte-for-byte against ROM_START,
-     sound against a transcription of MAME's mixer. Numbers, not adjectives. -->
+* `.mra` files generated from the driver's `ROM_START`; each set's image, rebuilt from the zips,
+  identical to `ROM_START`'s.
+* Graphics: the Pandora software model pixel-exact against MAME, 35 of 35 frames of the first
+  sets, 33 of 33 frames of the ten later ones and 9 of 9 of sutjarod, gwasu and yutnori; the RTL line engine against the model in
+  `sim/video_tb`.
+* Download: the SDRAM after the download path, with every ROM transform, against an independent
+  Python image, 0 words differ for every set; the `protdata` copy, 0 of 256 words differ.
+* 68000, whole core through the SDRAM model: snowbros' boot matches MAME on 12,702 of 12,702
+  writes; finalttr's on 12,222 writes, up to an interrupt-timing divergence.
+* 68000 from MAME save states: writes and I/O reads match until an interrupt lands at a different
+  instruction; five frames on, toppyrap, pzlbreak, moremore, moremorp and 4in1boot hold MAME's
+  state but for one counter word.
+* Sound: the chip writes against MAME's, in order: snowbros 29,127 of 29,127 (2.85 s), hyperpac
+  1,541 of 1,541 (900 ms), finalttr 2,561 of 2,561 (700 ms). yutnori against MAME's voice
+  states: 44 of 44 sample starts and 42 of 42 stops over 41 s.
 
 ## Acknowledgements
 
 - **Sorgelig** and the **MiSTer-devel team** for the
-  [Template_MiSTer](https://github.com/MiSTer-devel/Template_MiSTer) framework{{SDRAM_CREDIT}}.
-- The **MAMEdev team** — {{DRIVER_AUTHORS}} — for `{{MAME_DRIVER}}` and the device emulations that
-  are this core's specification.
-{{VENDORED_MODULE_CREDITS}}
-<!-- One line per upstream in THIRD-PARTY.md: author, what was taken, link. -->
+  [Template_MiSTer](https://github.com/MiSTer-devel/Template_MiSTer) framework and the screen
+  rotator.
+- The **MAMEdev team**: David Haywood and Mike Coates for `kaneko/snowbros.cpp`, David Haywood
+  and Luca Elia for the Pandora (`kaneko/kan_pand.cpp`), and the device emulations that are this
+  core's specification.
+- **Tobias Gubener** for [TG68K.C](https://github.com/TobiFlex/TG68K.C).
+- **Daniel Wallner** and the T80 maintainers for the T80 Z80.
+- **Jose Tejada (jotego)** for [jtcores](https://github.com/jotego/jtcores): jtopl, jt51,
+  jt6295, jt8052 and the jtframe sprite modules.
 
 ## Layout
 
@@ -202,8 +326,8 @@ Standard [Template_MiSTer](https://github.com/MiSTer-devel/Template_MiSTer) stru
 | path | contents |
 | - | - |
 | `sys` | MiSTer framework, vendored from the template, never edited |
-| `rtl` | core source; vendored modules carry a `PROVENANCE.md` |
-| `releases` | `.rbf` and `.mra` files; clones in `_alternatives` |
+| `rtl` | core source; `rtl/PROVENANCE.md` lists the vendored modules |
+| `releases` | `.rbf` and `.mra` files |
 | `docs` | roadmap, workflow, release process, kludges, hacks, lessons |
 | `sim` | ModelSim and Verilator testbenches |
 | `scripts` | build, deploy, capture and verification tooling |
@@ -212,8 +336,8 @@ Standard [Template_MiSTer](https://github.com/MiSTer-devel/Template_MiSTer) stru
 
 ## License
 
-{{LICENCE}} (see `LICENSE`). Imported components keep their own licences; `THIRD-PARTY.md` has the
-detail and every modified vendored file states the change in its header.
+GPL-3.0 (see `LICENSE`). Imported components keep their own licences; `rtl/PROVENANCE.md` and
+each vendored directory's `PROVENANCE.md` have the detail.
 
 Game ROMs contain copyrighted material and are not included. Obtaining them is your
 responsibility.

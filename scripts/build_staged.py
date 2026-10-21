@@ -63,6 +63,7 @@ QUARTUS_BIN = None
 # commit that adds the module it names, so the gate grows with the design.
 REQUIRED_INSTANCES = (
     "hps_io",        # the framework's HPS interface; present from the template on
+    "screen_rotate_two",   # HDMI orientation for a vertical monitor
     # "fx68k", "sdram", "arcade_video", "Hq2x", "screen_rotate_two", ...
 )
 
@@ -70,7 +71,7 @@ REQUIRED_INSTANCES = (
 # Presence is not connection: a module can stay in the netlist with its ports
 # bound to implicitly declared wires because a VERILOG_MACRO went missing.
 REQUIRED_MACROS = {
-    # "MISTER_FB": "HDMI rotation and 180 flip need the FB_* ports",
+    "MISTER_FB": "HDMI rotation needs the FB_* ports",
 }
 
 # Files the compile expects in the project directory that the repo keeps

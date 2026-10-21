@@ -180,7 +180,11 @@ def check_build(rbf, log, sta, allow_timing_miss=False):
 # numbers below the start (the old 10000001 series, dated files) are ignored. A
 # plain <project>.rbf from before this convention is moved aside to .held.
 # ---------------------------------------------------------------------------
-RBF_STEM = PROJECT
+# The bitstream's name, the .mra's <rbf>: not the project's. Main_MiSTer (mra_loader.cpp get_rbf)
+# takes any core whose name starts with <rbf> + "_", ignoring case, and keeps the last by a
+# case-sensitive compare, so "SnowBros" would load the Coin-Op Collection's
+# snowbros_mister_*.rbf wherever that is installed.
+RBF_STEM = "Pandora"
 RBF_FIRST = 30000001
 
 
@@ -280,6 +284,19 @@ def main():
             # become part of the remote path. The mkdir above IS quoted,
             # because that one is interpreted by a remote shell.
             m.put(f, f"{remote_dir}/{f.name}")
+
+        # A set whose zip is not on the device loads no ROM and boots to a black screen, which
+        # reads as a core fault: say so here. The ROMs on this device live in games/mame.
+        # A clone names "clone.zip|parent.zip"; the loader tries each in turn, so a merged
+        # parent zip alone is enough. Reported is the cascade's last (the parent) zip.
+        cascades = {tuple(attr.split("|")) for f in mras if f.name not in skipped
+                    for attr in re.findall(r'zip="([^"]+)"', f.read_text(encoding="utf-8"))}
+        if cascades and not a.dry_run:
+            have = set(m.run("ls /media/fat/games/mame").split())
+            missing = sorted({c[-1] for c in cascades if not any(z in have for z in c)})
+            if missing:
+                print(f"\n  MISSING on the device (/media/fat/games/mame): {', '.join(missing)}")
+                print("  Those sets will boot to a black screen until the zips are copied.")
 
         if skipped:
             print(f"\n  SKIPPED {len(skipped)} held-back .mra file(s) "

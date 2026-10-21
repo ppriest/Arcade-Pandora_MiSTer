@@ -98,3 +98,12 @@ releases/*.rbf
 **/.DS_Store
 __pycache__/
 *.pyc
+sim/boot_tb/*.hex
+sim/video_tb/*.hex
+sim/top_tb/*.hex
+sim/top_tb/segs.txt
+sim/top_tb/cfg.txt
+sim/sound_tb/*.hex
+sim/sound_tb/latch.txt
+opl_wr.log
+sim/yut_tb/cmds.txt

@@ -1,0 +1,10 @@
+# Vendored VHDL for simulation, packages first (scripts/run_sim.sh).
+rtl/cpu/tg68k/TG68K_Pack.vhd
+rtl/cpu/tg68k/TG68K_ALU.vhd
+rtl/cpu/tg68k/TG68KdotC_Kernel.vhd
+rtl/cpu/t80/T80_Pack.vhd
+rtl/cpu/t80/T80_MCode.vhd
+rtl/cpu/t80/T80_ALU.vhd
+rtl/cpu/t80/T80_Reg.vhd
+rtl/cpu/t80/T80.vhd
+rtl/cpu/t80/T80se.vhd

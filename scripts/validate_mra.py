@@ -69,7 +69,7 @@ ROT_TAG = {"ROT0": "horizontal", "ROT90": "vertical (cw)", "ROT180": "horizontal
 # Elements whose text content is meaningful and must not be flagged.
 TEXT_OK = {'part', 'name', 'setname', 'year', 'manufacturer', 'category',
            'rbf', 'rotation', 'players', 'joystick', 'region', 'about',
-           'mratimestamp', 'catver', 'mameversion', 'status', 'nvram'}
+           'mratimestamp', 'catver', 'mameversion', 'status', 'nvram', 'patch'}
 
 
 def driver_rotations():

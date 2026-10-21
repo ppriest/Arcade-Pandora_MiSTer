@@ -370,6 +370,23 @@ The decisive measurement for the reset bug was counting real commands on `{SDRAM
 SDRAM_nWE}`. Delivery counters and FSM accept-condition counters both looked perfect; only the pin
 count showed zero writes. Measure the last observable stage.
 
+### [Pandora] An .mra's <rbf> is a case-insensitive prefix: check it against every core on the device
+
+Main_MiSTer (`mra_loader.cpp` `get_rbf`) takes any `.rbf` whose name starts with `<rbf>` followed
+by `_` or `.`, ignoring case, and keeps the last by a case-sensitive `strcmp`. `<rbf>Pandora</rbf>`
+therefore loads the Coin-Op Collection's `snowbros_mister_20260611.rbf`, lower-case `s` sorting
+after `S`, wherever that core is installed. This core's bitstream is `Pandora_*.rbf`
+(`scripts/deploy.py` `RBF_STEM`).
+
+### [Pandora] A driver init's `i & 1` on a 68000 region means the high byte, not the odd file byte
+
+`romload.cpp` (707-709) byte-swaps a big-endian region onto a little-endian host after loading; driver
+`init_*` functions run on that swapped buffer. `init_4in1boot`'s `if (i & 1) bitswap(...)`
+therefore touches the 68000's high byte: the bytes loaded at even offsets by
+`ROM_LOAD16_BYTE(..., 0x00000, ...)`. Transcribed as "odd bytes" in the download transform, the
+reset vector read back 0x016C where MAME read 0x01AC (`debug/4in1boot-boot`, first divergence at
+access 4), while the Python fixture built from the same reading agreed with the RTL.
+
 ## Memory transport: req/valid contracts, latency, byte order
 
 ### Give a registered RAM its full read latency before consuming the data
@@ -832,6 +849,18 @@ pair before the RTL around it.
   Write the bench arguments (coin schedule, DIPs, start presses) into the capture's manifest and make
   the comparison script refuse a mismatch.
 
+### [Pandora] Compare a CPU against MAME from a restored state, not from reset
+
+snowbros spends 3.9 million bus accesses in its power-on RAM test before any I/O, about 45
+minutes of ModelSim at ~1700 accesses a second. Capturing MAME's state at an instruction
+boundary (the first fetch of an interrupt handler: registers, RAMs, pending levels, raster)
+and restoring it into the bench through the CPU's own state port compares five frames of play
+in under three minutes, and ends with a section-by-section state comparison, which a trace
+alone does not give. Three things then differ between two correct 68000s and are normalised,
+not failed: the order of a long write's halves (MAME low word first on `-(An)`, TG68K.C high
+first); the interrupted PC inside exception frames, and with it how many times a wait loop
+polls RAM; and where in the line an interrupt is taken (`scripts/compare_boot_trace.py`).
+
 ## Timing closure
 
 - **[BallySente] Ask the timing analyser which path fails; do not reason about it.** A filter
@@ -1021,6 +1050,14 @@ risked: the level-1 autovector shares its target with bus error and illegal inst
 target is the reset entry. Not proven that the extra IRQ caused the restart -- a scan found no
 instruction lowering the mask to 0. Dump the vector table before deciding a board's interrupts; an
 ack address that is also an input port must acknowledge on writes only.
+
+### [Pandora] TG68K.C's interrupt entry depends on its CPU mode; measure the one you run
+
+`gx_ss_m68k` knew two sequences: TG68K.C as a 68020 (IACK, format word, PC, SR) and fx68k as a
+68000 (PC low before the IACK). TG68K.C with `CPU = "00"` is a third: IACK, PC high at A7+2,
+PC low at A7+4, SR at A7, no format word; and its `MOVEC` is an illegal instruction, so the
+stub's `MOVEC` words have to be NOPs. Logged by `sim/ss_m68k_tb +LOG=1` before writing the
+mode; the first attempt with the 68020 sequence took an illegal-instruction exception in the stub.
 
 ## Quartus synthesis gotchas (not visible in ModelSim)
 

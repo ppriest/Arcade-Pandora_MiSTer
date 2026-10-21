@@ -4,6 +4,8 @@
 
     python scripts/compare_boot_trace.py replay  <set>   # MAME's I/O reads -> replay file
     python scripts/compare_boot_trace.py compare <set>   # RTL trace vs MAME trace
+    python scripts/compare_boot_trace.py compare <set> --mame <file> --rtl <file>
+                                                     # e.g. traces from a restored state
 
 Inputs: debug/<set>-boot/<set>_boot.trace (scripts/mame_boot_trace.py) and
 <set>_rtl.trace, written by the boot bench in the same "seq rw addr mask data"
@@ -76,6 +78,44 @@ def merge_halves(rows):
     return out
 
 
+def long_order(ws):
+    """A long write's two word halves in ascending address order.
+
+    The two halves of a long write are adjacent accesses to a and a + 2; a 68000 writing
+    -(An) puts the low word first, TG68K.C the high word. The memory is the same either
+    way, so both traces are put in one order before the in-order comparison.
+    """
+    ws = list(ws)
+    i = 0
+    while i + 1 < len(ws):
+        (a0, m0, d0), (a1, m1, d1) = ws[i], ws[i + 1]
+        if a0 == a1 + 2 and m0 == m1 == 0xFFFF and not is_rom(a0):
+            ws[i], ws[i + 1] = ws[i + 1], ws[i]
+            i += 2
+        else:
+            i += 1
+    return ws
+
+
+VEC_LO, VEC_HI = 0x60, 0x7F       # the 68000's autovectors (spurious and levels 1-7)
+
+
+def split_frames(rows):
+    """(rows without exception frames, frames). A frame is the three writes before an
+    autovector read: PC and SR of an interrupt entry. Their PC is the instruction the
+    interrupt landed on, which a CPU with other instruction timings reaches at another
+    point of a wait loop, so frames are checked apart from the in-order writes."""
+    drop, frames = set(), []
+    for i, (_, rw, a, m, d) in enumerate(rows):
+        if rw == "r" and VEC_LO <= a <= VEC_HI and not (a & 3):
+            ws = [j for j in range(i - 1, max(-1, i - 8), -1) if rows[j][1] == "w"][:3]
+            if len(ws) == 3:
+                drop.update(ws)
+                f = sorted((rows[j][2], rows[j][4]) for j in ws)   # by address: SR, PC high, PC low
+                frames.append((a, f[0][0], f[0][1], (f[1][1] << 16) | f[2][1]))
+    return [r for i, r in enumerate(rows) if i not in drop], frames
+
+
 def is_rom(a):
     return any(lo <= a <= hi for lo, hi in ROM)
 
@@ -97,10 +137,10 @@ def cmd_replay(game):
     return 0
 
 
-def cmd_compare(game):
+def cmd_compare(game, mame_path=None, rtl_path=None):
     base = REPO / "debug" / f"{game}-boot"
-    raw_mame = load(base / f"{game}_boot.trace")
-    raw_rtl = load(base / f"{game}_rtl.trace")
+    raw_mame = load(mame_path or base / f"{game}_boot.trace")
+    raw_rtl = load(rtl_path or base / f"{game}_rtl.trace")
     if not raw_rtl:
         sys.exit("the RTL trace is empty -- did the bench run?")
     mame = merge_halves(raw_mame)
@@ -108,8 +148,10 @@ def cmd_compare(game):
     print(f"merged split halves: MAME {len(raw_mame)} -> {len(mame)} accesses, "
           f"RTL {len(raw_rtl)} -> {len(rtl)}")
 
-    mw = [(a, m, d) for _, rw, a, m, d in mame if rw == "w"]
-    rw_ = [(a, m, d) for _, rw, a, m, d in rtl if rw == "w"]
+    mame, mframes = split_frames(mame)
+    rtl, rframes = split_frames(rtl)
+    mw = long_order((a, m, d) for _, rw, a, m, d in mame if rw == "w")
+    rw_ = long_order((a, m, d) for _, rw, a, m, d in rtl if rw == "w")
     rc = 0
 
     # --- writes, strictly in order
@@ -142,9 +184,11 @@ def cmd_compare(game):
                 break
     window = mame[:mame_cut]
 
-    # --- non-ROM reads, in order
-    mio = [(a, m, d) for _, rw, a, m, d in window if rw == "r" and not is_rom(a)]
-    rio = [(a, m, d) for _, rw, a, m, d in rtl if rw == "r" and not is_rom(a)]
+    # --- I/O reads, in order. RAM reads are not compared: a loop polling a RAM flag that an
+    # interrupt sets spins as many times as the CPU's timing gives it, and RAM contents are
+    # what a state comparison checks.
+    mio = [(a, m, d) for _, rw, a, m, d in window if rw == "r" and not is_rom(a) and not is_ram(a)]
+    rio = [(a, m, d) for _, rw, a, m, d in rtl if rw == "r" and not is_rom(a) and not is_ram(a)]
     k = min(len(mio), len(rio))
     bad = next((i for i in range(k) if mio[i] != rio[i]), None)
     if bad is None and len(mio) == len(rio):
@@ -153,6 +197,11 @@ def cmd_compare(game):
         rc = 1
         print(f"I/O READS MAME {len(mio)}, RTL {len(rio)}; first difference at "
               f"{bad + 1 if bad is not None else k + 1}")
+        i0 = bad if bad is not None else k
+        for i in range(max(0, i0 - 2), min(i0 + 3, max(len(mio), len(rio)))):
+            mm = f"{mio[i][0]:06X} {mio[i][1]:04X} {mio[i][2]:04X}" if i < len(mio) else "-"
+            rr = f"{rio[i][0]:06X} {rio[i][1]:04X} {rio[i][2]:04X}" if i < len(rio) else "-"
+            print(f"    #{i + 1:<6} MAME {mm:20} RTL {rr}")
 
     # --- ROM fetches, superset
     mrom = {(a, m) for _, rw, a, m, d in window if rw == "r" and is_rom(a)}
@@ -175,6 +224,20 @@ def cmd_compare(game):
         print(f"ROM       every one of MAME's {len(mrom)} distinct ROM reads in the window "
               f"was also made by the RTL")
 
+    # --- interrupt frames: vector, stack address and SR in order; PC reported
+    mf = mframes
+    k = min(len(mf), len(rframes))
+    bad = next((i for i in range(k) if mf[i][:3] != rframes[i][:3]), None)
+    pcs = sum(1 for i in range(k) if mf[i][3] == rframes[i][3])
+    if bad is None and len(rframes) <= len(mf):
+        print(f"FRAMES    {len(rframes)} of {len(rframes)} interrupt entries match MAME in vector, "
+              f"stack address and SR; {pcs} also in the interrupted PC")
+    else:
+        rc = 1
+        i = bad if bad is not None else k
+        print(f"FRAMES    MISMATCH at interrupt entry {i + 1}: "
+              f"MAME {mf[i] if i < len(mf) else '-'}, RTL {rframes[i] if i < len(rframes) else '-'}")
+
     print(f"\nwindow: RTL {len(rtl)} accesses, MAME {mame_cut} accesses to the same "
           f"write ({n} writes)")
     return rc
@@ -184,8 +247,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["replay", "compare"])
     ap.add_argument("game")
+    ap.add_argument("--mame")
+    ap.add_argument("--rtl")
     a = ap.parse_args()
-    return cmd_replay(a.game) if a.cmd == "replay" else cmd_compare(a.game)
+    return cmd_replay(a.game) if a.cmd == "replay" else cmd_compare(a.game, a.mame, a.rtl)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
-# SnowBros
+# Pandora
 
-MiSTer arcade core for SnowBros. Built with the `mister-arcade-core` skill.
+MiSTer arcade core for Pandora. Built with the `mister-arcade-core` skill.
 
 ## Before working
 
@@ -44,7 +44,7 @@ MiSTer arcade core for SnowBros. Built with the `mister-arcade-core` skill.
   are optional to ship, but keep state reachable and `docs/STATE.md` current as RTL lands:
   retrofitting state capture is the expensive path, and the state dump is what makes a
   hardware bug reproducible in a bench.
-- Debug switches live on the OSD's hidden page, and probes in the `SnowBros_stp` revision
+- Debug switches live on the OSD's hidden page, and probes in the `Pandora_stp` revision
   only.
 - No multiplies or divides in 2D video or CPU glue: shifts, masks, adds, accumulators
   (WORKFLOW §14). GPU-like chips (3D geometry, rasterisers) use them by design.
@@ -54,4 +54,4 @@ MiSTer arcade core for SnowBros. Built with the `mister-arcade-core` skill.
 - Comments say what the code cannot. Delete or rewrite them when they go stale.
 - No dates unless load-bearing, no invented durations, no narrative.
 - A hardware claim cites its evidence: screenshot path, probe readout, log line.
-- New general lessons go in `docs/LESSONS_LEARNED.md` tagged `[SnowBros]`.
+- New general lessons go in `docs/LESSONS_LEARNED.md` tagged `[Pandora]`.

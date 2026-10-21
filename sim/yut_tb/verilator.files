@@ -1,0 +1,12 @@
+-Irtl/sound/jt6295/hdl
+rtl/sound/jt6295/hdl/jt6295.v
+rtl/sound/jt6295/hdl/jt6295_acc.v
+rtl/sound/jt6295/hdl/jt6295_adpcm.v
+rtl/sound/jt6295/hdl/jt6295_ctrl.v
+rtl/sound/jt6295/hdl/jt6295_rom.v
+rtl/sound/jt6295/hdl/jt6295_serial.v
+rtl/sound/jt6295/hdl/jt6295_sh_rst.v
+rtl/sound/jt6295/hdl/jt6295_timing.v
+rtl/sound/oki_rom_bridge.sv
+rtl/sound/yutnori_sound.sv
+sim/yut_tb/tb_yut.sv
