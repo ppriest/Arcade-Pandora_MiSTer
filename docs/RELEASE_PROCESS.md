@@ -57,7 +57,7 @@ Steps for a release:
    shows this build's date and the right MRA count. Files in `unsupported/` and `_dev/` are not
    published, so keep work in progress there.
 
-**Current state:** `Arcade-Pandora_20261021.rbf`, the release revision of `459c954` (seed default): every clock meets timing (`clk_sys` +4.454 ns); 18 `.mra` files and 12 clones in `_alternatives`; not yet pushed.
+**Current state:** `Arcade-Pandora_20261025.rbf`, the release revision of `3743699` (seed default): every clock meets timing (`clk_sys` +4.031 ns); 18 `.mra` files and 12 clones in `_alternatives`; not yet pushed.
 
 ## Submitting the core upstream
 

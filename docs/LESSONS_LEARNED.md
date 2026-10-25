@@ -387,6 +387,20 @@ therefore touches the 68000's high byte: the bytes loaded at even offsets by
 reset vector read back 0x016C where MAME read 0x01AC (`debug/4in1boot-boot`, first divergence at
 access 4), while the Python fixture built from the same reading agreed with the RTL.
 
+### [Pandora] HBlank must fall on every line, vertical blank included, or the scandoubler loses VSync
+
+`sys/scandoubler.v` restarts its line counter on HBlank's falling edge and passes VSync, and steps
+the doubled line, only when that counter meets the HSync position it measured from the same edge.
+`crt_chain.sv` (shared with DreamWorld, Psikyo, Silkroad, DecoMLC and Fuuki) fed `crt_adjust` the
+inverse of `crt_vsize`'s DE, which is low through vertical blank, so HBlank stayed high from the
+last line to the first. Without a scandoubler nothing needs those edges and the picture is right,
+so it showed only as every Scandoubler Fx scrambling the screen (issue #1). `sim/sd_tb`: `vso[0]`
+latched VSync and never reached `vso[3]`; `hs_start` grew by a half line per VBlank line. Two
+Verilator traps on the way, both in `sys/` and both making a correct path look dead:
+`arcade_video` leaves the mixer's `HDMI_FREEZE` unconnected, and `video_mixer.sv` uses
+`R_in`/`G_in`/`B_in` outside the generate block that declares them (Verilator makes 1-bit
+implicit nets, so the output is black); the bench compiles edited copies (`sim/sd_tb/*_vl.*`).
+
 ## Memory transport: req/valid contracts, latency, byte order
 
 ### Give a registered RAM its full read latency before consuming the data

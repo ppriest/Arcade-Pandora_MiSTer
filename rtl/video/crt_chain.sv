@@ -92,6 +92,20 @@ module crt_chain #(
 
 	assign ce_out = active ? rd_tick : vz_ce;
 
+	// crt_vsize has no HBlank output and its DE is low through vertical blank, so ~vz_de holds
+	// HBlank high from the last line to the first: the framework's scandoubler restarts its line
+	// counter on HBlank's falling edge and then never passes VSync or steps its line, which
+	// scrambles every Scandoubler Fx (issue #1). While V-Size is not scaling, crt_vsize is a
+	// registered passthrough two input CEs deep, so the core's own HBlank delayed the same is
+	// exact; while it scales, it retimes the lines and only its DE describes them. V-Size is off
+	// whenever the scandoubler is on (scale_en).
+	logic hb_q1 = 1'b1, hb_q2 = 1'b1;
+	always_ff @(posedge clk) if (ce_pix) begin
+		hb_q1 <= hb_in;
+		hb_q2 <= hb_q1;
+	end
+	wire hb_vz = scaling ? ~vz_de : hb_q2;
+
 	logic adj_hb, adj_vb;
 
 	crt_adjust #(
@@ -107,7 +121,7 @@ module crt_chain #(
 		.hoffset  (active ? hoffset : 9'sd0),
 		.voffset  (active ? voffset : 6'sd0),
 		.r_in(vz_r), .g_in(vz_g), .b_in(vz_b),
-		.hs_in(vz_hs), .vs_in(vz_vs), .hb_in(~vz_de), .vb_in(vz_vb),
+		.hs_in(vz_hs), .vs_in(vz_vs), .hb_in(hb_vz), .vb_in(vz_vb),
 		.r_out(r_out), .g_out(g_out), .b_out(b_out),
 		.hs_out(hs_out), .vs_out(vs_out), .hb_out(adj_hb), .vb_out(adj_vb),
 		.hs_ref_out(hs_ref)
@@ -122,7 +136,22 @@ module crt_chain #(
 		if (hs_out & ~hs_out_d) vb_line <= adj_vb;
 	end
 
+	// crt_adjust (vendored, not edited here) gates its HBlank with VBlank too, so with CRT Adjust
+	// on, HBlank is again high through vertical blank (see hb_vz). On a VBlank line the window
+	// of the last active line, in CEs from HSync, stands in. A line crt_adjust blanks at the
+	// frame's edge but VBlank does not keeps its HBlank high, as before: a window there would be
+	// a visible black line.
+	logic [9:0] hc = 10'd0, hb_fall = 10'd0, hb_rise = 10'd0;
+	logic       adj_hb_d = 1'b1;
+	always_ff @(posedge clk) if (ce_out) begin
+		adj_hb_d <= adj_hb;
+		hc <= (hs_out & ~hs_out_d) ? 10'd0 : hc + 10'd1;
+		if (!adj_hb &&  adj_hb_d) hb_fall <= hc;
+		if ( adj_hb && !adj_hb_d) hb_rise <= hc;
+	end
+	wire hb_adj = vb_line ? !(hc >= hb_fall && hc < hb_rise) : adj_hb;
+
 	assign vb_out = active ? vb_line : adj_vb;
-	assign hb_out = active ? (adj_hb | hs_out) : adj_hb;
+	assign hb_out = active ? (hb_adj | hs_out) : adj_hb;
 
 endmodule

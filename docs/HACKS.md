@@ -26,6 +26,7 @@ Rules:
 | Bench stands in for the Z80 | `sim/state_tb/tb_state.sv`, `sim/boot_tb/tb_boot.sv` | 0x300000 reads a constant (the captured latch, or 0x03) | The sound board in the benches (Phase 3) | MAME read 0x03 once in the first 15 million accesses of snowbros | tooling |
 | SDRAM_CLK at 317 degrees, 48 MHz | `rtl/pll/pll_0002.v` `phase_shift1` | Scaled from two sibling cores' estimates with the same controller, not measured here | A phase sweep on hardware: read margin at several shifts | unverified | visible if wrong |
 | finalttr's M6295 at 1 MHz | `rtl/snowbros_core.sv` (`s_oki`) | MAME sets 999900 Hz (snowbros.cpp 2150); the 1 MHz enable is 100 ppm fast | A phase accumulator for that set | unverified by ear | latent (pitch 0.01% high) |
+| HBlank replayed through vertical blank | `rtl/video/crt_chain.sv` (`hb_vz`, `hb_adj`) | crt_vsize and the vendored crt_adjust both hold HBlank high through vertical blank, and the framework's scandoubler needs a falling edge every line (issue #1). With V-Size off the core's own HBlank is used; with CRT Adjust on, the last active line's window is replayed on VBlank lines | crt_vsize and crt_adjust emitting a per-line HBlank upstream | `sim/sd_tb`: every Fx 448 lines, R 0-255, each line twice; Fx None unchanged byte for byte | visible: with CRT Adjust on and a Scandoubler Fx, line 239 shows once and HQ2x's first line is half-blended (line 16 is dropped with CRT Adjust on, scandoubler or not) |
 
 ## Removed
 

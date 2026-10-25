@@ -28,6 +28,9 @@ for the DE10-nano.
 
 ## History
 
+**`Arcade-Pandora_20261025.rbf`**
+- Scandoubler Fx (HQ2x, CRT 25/50/75%) fixed ([#1](https://github.com/ppriest/Arcade-Pandora_MiSTer/issues/1)); button names for Cookie & Bibi 2 and 3 and Toppy & Rappy ([#2](https://github.com/ppriest/Arcade-Pandora_MiSTer/issues/2)).
+
 **`Arcade-Pandora_20261021.rbf`**
 - Games on the SnowBros hardware - mostly bootlegs/Korean title by the likes of Semicom who cloned the SnowBros hw.
 
@@ -109,7 +112,7 @@ dot clock or horizontal total. The 354 dots were chosen to give MAME's rate with
 
 ### Floorplan
 
-The release revision at `459c954`, fitted Oct 21 2026 (`scripts/floorplan.py`; per-block counts in
+The release revision at `3743699`, fitted Oct 25 2026 (`scripts/floorplan.py`; per-block counts in
 `docs/floorplan/Pandora_groups.md`):
 
 ![floorplan](docs/floorplan/Pandora.png)
@@ -230,6 +233,10 @@ Start 1 / 2, Coin 5 / 6, P pause. suhosong's fifth button is on the pad only.
 
 Known issues:
 
+* With HDMI Orientation CW or CCW, the CRT 25/50/75% scanlines do not show: the framework draws
+  them after the rotator's copy and turns them off while its frame buffer is on
+  (`sys/sys_top.v`, `sl_r`). HQ2x works rotated.
+
 `docs/MAME_KLUDGES.md` lists what is taken from MAME as behaviour and what is known not to be
 right. `docs/HACKS.md` lists this core's own approximations. `docs/ROADMAP.md` is the plan and its
 progress; `docs/LESSONS_LEARNED.md` is what it cost.
@@ -242,13 +249,13 @@ progress; `docs/LESSONS_LEARNED.md` is what it cost.
 
 ### Resource usage
 
-Release revision `Pandora` at `459c954`, default seed, on the DE10-nano's Cyclone V 5CSEBA6,
-speed grade 7; every clock meets timing, `clk_sys` with +4.454 ns of setup slack, the worst the
-HDMI PLL's with +0.332 ns:
+Release revision `Pandora` at `3743699`, default seed, on the DE10-nano's Cyclone V 5CSEBA6,
+speed grade 7; every clock meets timing, `clk_sys` with +4.031 ns of setup slack, the worst the
+HDMI PLL's with +0.672 ns:
 
 | resource | used | available |
 | --- | --- | --- |
-| Logic (ALMs) | 19,393 | 41,910 |
+| Logic (ALMs) | 19,330 | 41,910 |
 | Block memory bits | 1,504,522 | 5,662,720 |
 | RAM blocks | 241 | 553 |
 | DSP blocks | 52 | 112 |
