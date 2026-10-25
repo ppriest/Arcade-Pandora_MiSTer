@@ -214,7 +214,9 @@ its game uses:
 | Game | Buttons |
 |-|-|
 | snowbros, toto | Shoot, Jump |
-| hyperpac, cookbib2, cookbib3, toppyrap, twinkle | Jump, Fire |
+| hyperpac, twinkle | Jump, Fire |
+| cookbib2, cookbib3 | Fire, Special |
+| toppyrap | Fire, Jump |
 | finalttr | Rotate, Rotate Back |
 | pzlbreak | Launch |
 | 3in1semi, mcheonru, moremore, moremorp, 4in1boot | A, B (compilations; the buttons mean different things per game) |

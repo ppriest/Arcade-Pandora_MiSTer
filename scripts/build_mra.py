@@ -50,8 +50,9 @@ SETS = {"snowbros": None, "snowbrosa": "snowbros", "snowbrosb": "snowbros", "sno
         "4in1boot": None}
 # per game (parent): button names, button 1 first.
 #   snowbros, toto  Snow Bros.: button 1 throws snow, 2 jumps
-#   hyperpac, cookbib2, cookbib3  the driver's own comments (934-936, 995-997): 1 jump, 2 fire
-#   toppyrap, twinkle  the same comments on their ports (unverified: copied with the ports)
+#   hyperpac  the driver's own comments (934-936, 995-997): 1 jump, 2 fire
+#   twinkle  the same comments on its port (unverified: copied with the port)
+#   cookbib2, cookbib3, toppyrap  from a player (issue #2), against the driver's comments
 #   suhosong  its PORT_NAMEs: B1 High, B2 Low, B3 Hit / Double Up, B4 Stand / Take, B6 Bet /
 #             Raise; B5 is its start (Pandora.sv maps them)
 #   finalttr  B1 and B2 both act at player select in MAME; named for a Tetris game's two rotations
@@ -59,8 +60,8 @@ SETS = {"snowbros": None, "snowbrosa": "snowbros", "snowbrosb": "snowbros", "sno
 #   3in1semi, mcheonru, moremore, 4in1boot  compilations: B1 selects in MAME's menu; no name
 #             for what each button does across their games, so A and B
 BUTTONS = {"snowbros": ["Shoot", "Jump"], "toto": ["Shoot", "Jump"],
-           "hyperpac": ["Jump", "Fire"], "cookbib2": ["Jump", "Fire"], "cookbib3": ["Jump", "Fire"],
-           "toppyrap": ["Jump", "Fire"], "twinkle": ["Jump", "Fire"],
+           "hyperpac": ["Jump", "Fire"], "cookbib2": ["Fire", "Special"], "cookbib3": ["Fire", "Special"],
+           "toppyrap": ["Fire", "Jump"], "twinkle": ["Jump", "Fire"],
            "suhosong": ["High", "Low", "Hit / Double Up", "Stand / Take", "Bet / Raise"],
            "finalttr": ["Rotate", "Rotate Back"], "pzlbreak": ["Launch"],
            "3in1semi": ["A", "B"], "mcheonru": ["A", "B"], "moremore": ["A", "B"],

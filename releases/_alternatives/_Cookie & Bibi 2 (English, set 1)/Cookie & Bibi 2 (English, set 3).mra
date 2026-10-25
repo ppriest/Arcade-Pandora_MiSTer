@@ -12,7 +12,7 @@
     <rotation>horizontal</rotation>
     <players>2</players>
     <joystick>8-way</joystick>
-    <buttons names="Jump,Fire,-,-,-,-,Start,Coin,Pause" default="A,B,Start,Select,R" count="2"/>
+    <buttons names="Fire,Special,-,-,-,-,Start,Coin,Pause" default="A,B,Start,Select,R" count="2"/>
 
     <!-- mod bytes (Pandora.sv) -->
     <rom index="1"><part>8F 18 00 00 00 30 00 00</part></rom>
