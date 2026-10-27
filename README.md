@@ -48,7 +48,6 @@ author has judged picture and sound against MAME.
 
 | Name | Year | Manufacturer | Board | Notes |
 |-|-|-|-|-|
-| Snow Bros. - Nick & Tom (set 1) | 1990 | Toaplan | Toaplan | |
 | Come Back Toto | 1996 | SoftClub | Toaplan | ROM bit swap at download |
 | Final Tetris | 1993 | Jeil Computer System | SemiCom, finalttr | sound board at 3.579545 MHz |
 | Hyper Pacman | 1995 | SemiCom | SemiCom, MCU | the dumped 87C52 runs on the core |
@@ -75,13 +74,17 @@ parent's board; not yet run on the DE10-nano.
 
 | Name | Parent |
 |-|-|
-| Snow Bros. - Nick & Tom (set 2, set 3, set 4, Japan, Dooyong license) | snowbros |
 | Hyper Pacman (bootleg) | hyperpac, without the MCU |
 | Cookie & Bibi 2 (English, set 2) | cookbib2, MCU |
 | Cookie & Bibi 2 (English, set 3), (English / Korean) | cookbib2, on the protdata board |
 | Puzzle Break (set 2) | pzlbreak |
 | Twinkle (set 2) | twinkle |
 | New HyperMan (3-in-1 with Cookie & Bibi & HyperMan) (set 2) | 3in1semi |
+
+### Not supported
+
+Snow Bros. - Nick & Tom (set 1) and its clones (set 2, set 3, set 4, Japan, Dooyong license)
+are in `releases/unsupported/`, which the Downloader does not publish.
 
 ### Out of scope for now
 

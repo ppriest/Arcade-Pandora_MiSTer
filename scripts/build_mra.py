@@ -59,6 +59,9 @@ SETS = {"snowbros": None, "snowbrosa": "snowbros", "snowbrosb": "snowbros", "sno
 #   pzlbreak  B1 launches the stage in MAME; B2 and B3 did nothing seen
 #   3in1semi, mcheonru, moremore, 4in1boot  compilations: B1 selects in MAME's menu; no name
 #             for what each button does across their games, so A and B
+# Written to releases/unsupported/, which the Downloader does not publish.
+UNSUPPORTED = {"snowbros"}
+
 BUTTONS = {"snowbros": ["Shoot", "Jump"], "toto": ["Shoot", "Jump"],
            "hyperpac": ["Jump", "Fire"], "cookbib2": ["Fire", "Special"], "cookbib3": ["Fire", "Special"],
            "toppyrap": ["Fire", "Jump"], "twinkle": ["Jump", "Fire"],
@@ -365,6 +368,8 @@ def build(setname, sm, out_root, write=True):
 
     def safe(t):
         return re.sub(r'[\\/:*?"<>|]', "-", t)
+    if (parent or setname) in UNSUPPORTED and out_root.name == "releases":
+        out_root = out_root / "unsupported"
     odir = (out_root / "_alternatives" / ("_" + safe(game_info(text, parent)["title"]))) if parent else out_root
     fname = odir / (safe(info["title"]) + ".mra")
     odir.mkdir(parents=True, exist_ok=True)
