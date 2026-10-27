@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Dump the worst setup-timing paths for the clk_sys domain from the
 # already-compiled database, without a recompile. Run from the directory that
 # holds the database (the repo root for build.sh, build/ for build_staged.py):

@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- The main CPU's view of the machine, frame by frame, as ground truth for the
 -- RTL main board's trace. Driven by scripts/mame_sys_trace.py:
 --

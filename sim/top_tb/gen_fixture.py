@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Fixtures for sim/top_tb from a set's .mra image (scripts/build_mra.py --image).
 
     python sim/top_tb/gen_fixture.py snowbros       # from the repository root

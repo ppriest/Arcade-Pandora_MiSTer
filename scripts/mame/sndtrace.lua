@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Sound traces for scripts/mame_sndtrace.py: what the 68000 sends the sound board and what the
 -- sound CPU writes to its chips, each with MAME's time in ns.
 --

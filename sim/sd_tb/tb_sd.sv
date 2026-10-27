@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 `timescale 1ns/1ps
 // The video output path under the framework's scandoubler (issue #1): the core's raster
 // (rtl/video/video_timing.sv) with a test pattern, R = the pixel's column, G = its line, through

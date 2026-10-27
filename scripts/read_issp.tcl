@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Read the core's debug probes over JTAG (In-System Sources and Probes).
 #
 #   python scripts/read_issp.py [instance] [clear] [set N] [pulse N]

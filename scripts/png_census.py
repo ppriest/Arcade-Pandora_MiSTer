@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 import zlib,struct,sys
 from collections import Counter
 def load(fn):

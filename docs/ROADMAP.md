@@ -28,7 +28,7 @@ citations, is **[`HARDWARE_NOTES.md`](HARDWARE_NOTES.md)**.
 
 ## Progress
 
-**Phase 2 in progress.** First build `7f5d639`+1 (work RAM `no_rw_check`): fits, setup slack
+**Phases 1-4 done; released as `releases/Arcade-Pandora_20261025.rbf`.** First build `7f5d639`+1 (work RAM `no_rw_check`): fits, setup slack
 +6.966 ns on clk_sys, 217 of 553 RAM blocks, 37% of the ALMs (`build/q_staged.log`). Deployed as
 `Pandora_30000001.rbf` with five `.mra` files; on the board all five sets run into attract mode: snowbros, hyperpac (the
 user's eye), cookbib3, cookbib2 (the real MCU) and toto (the download's bit swap)
@@ -308,7 +308,7 @@ none) through the Pandora's flip, checked against the unflipped frame rotated 18
 snowbros, hyperpac and cookbib3 boot and play on a DE10-nano, silent.
 
 **Phase 3 — Sound.** Toaplan Z80 + YM3812; SemiCom Z80 + YM2151 + M6295. Exit: register-write
-traces from MAME reproduce, and judged by ear on the board. — In progress. `scripts/mame_sndtrace.py`
+traces from MAME reproduce, and judged by ear on the board. — Done. `scripts/mame_sndtrace.py`
 captures the latch, YM and M6295 writes from MAME; `sim/sound_tb` replays the latch at MAME's
 times into the RTL board. Toaplan (snowbros): 29127 of 29127 chip writes match MAME in order
 over 2.85 s, timing within 0.046 ms. SemiCom (hyperpac): 1541 of 1541 over 900 ms, within 0.037 ms,
@@ -317,7 +317,7 @@ ModelSim. Built (slack +4.139 ns, 233 of 553 RAM blocks, 44% of the ALMs) and de
 `Pandora_30000003.rbf`. On the board: snowbros sounds right to the user; hyperpac not yet heard.
 
 **Phase 4 — The rest of the list, and accuracy.** Every in-scope set and clone `.mra`, per-set
-constants, `bg_pen`, toto and 4in1boot ROM transforms. `MAME_KLUDGES.md` and `HACKS.md` current. — In progress. `.mra` files for finalttr, toppyrap, pzlbreak,
+constants, `bg_pen`, toto and 4in1boot ROM transforms. `MAME_KLUDGES.md` and `HACKS.md` current. — Done. `.mra` files for finalttr, toppyrap, pzlbreak,
 suhosong, twinkle, 3in1semi, mcheonru, moremore, moremorp and 4in1boot (pzlbreaka, twinklea,
 3in1semia: no zip here). Three input layouts (mod 1 bits 4 and 5) and finalttr's 3.579545 MHz
 sound clock (bit 6). Checked: the Pandora model on 33 MAME frames of these sets, 0 pixels differ;

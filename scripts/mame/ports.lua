@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Print every I/O port field MAME built for the running set, then exit.
 -- PORTS_FILE names the output. Useful for finding the exact field names --dip and write_sweep --coin need.
 local done = false

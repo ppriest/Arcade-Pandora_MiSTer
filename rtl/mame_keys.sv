@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 // MAME's default keys (src/emu/inpttype.ipp) in hps_io's joystick layout, to
 // OR into joystick_0/1: right, left, down, up at bits 0-3, buttons 1-6 at 4-9,
 // Start, Coin, Pause, Service at the J1 line's own positions (parameters).

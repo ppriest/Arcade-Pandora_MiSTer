@@ -59,16 +59,14 @@ interrupts through maincpu's state ports, the ports the board's engine will use.
 interrupt lines cannot be set from Lua: a load into MAME checks that the file's pending levels
 are MAME's at that point and reports a difference.
 
-The board side (DDR3 slots, `SS` in CONF_STR, a dump over the debug path) waits for the top
-level (Phase 2). Its image is these sections, written by an engine on KonamiGX's
-`gx_savestate.sv` pattern.
+The board side (DDR3 slots, `SS` in CONF_STR, a dump over the debug path) is not implemented
+yet. Its image is these sections, written by an engine on KonamiGX's `gx_savestate.sv` pattern.
 
 ## RAMs
 
 | Region | RTL | Width x depth | Bytes | Save? |
 |---|---|---|---|---|
-| work RAM | outside maincpu (bench model so far) | 16 x 8192 / 32768 | 16 / 64 KB | yes |
-| palette | outside maincpu | 16 x 256 | 512 | yes |
+| work RAM | `snowbros_core.wram_lo`, `wram_hi` | 16 x 8192 / 32768 | 16 / 64 KB | yes |
 | sprite RAM | `snowbros_video.spr_ram` | 8 x 4096 | 4 KB | yes |
 | palette | `snowbros_video.pal_lo`, `pal_hi` | 2 x 8 x 256 | 512 | yes (the `palette` section) |
 | resolved list | `snowbros_video.list_ram` | 41 x 512 | 2.6 KB | yes, section to add: the rest of the frame is drawn from it, and by line 32 the 68000 has started rewriting sprite RAM (sweep: lines 26-89). MAME's equivalent is the Pandora's drawn bitmap, which the MAME side can rebuild by resolving `spriteram` of the previous vblank |
@@ -80,15 +78,15 @@ level (Phase 2). Its image is these sections, written by an engine on KonamiGX's
 |---|---|---|---|---|
 | 68000 registers | TG68K.C through `gx_ss_m68k` (MODE 2) | 23 x 32 | yes | the CPU's own |
 | pending interrupts | `maincpu.irq_pend` | 3 | yes, `ss_irq_*` | the CPU's input lines |
-| flip | top level (Phase 2) | 1 | yes | `m_flip_screen` (kan_pand.cpp) |
-| sound latches | top level (Phase 3) | 2 x 8 | yes | `generic_latch_8` |
+| flip | `snowbros_core.flip_reg`, XOR the OSD's | 1 | yes | `m_flip_screen` (kan_pand.cpp) |
+| sound latches | `toaplan_sound.latch_in`/`reply`, `semicom_sound.latch_in` | 2 x 8 | yes | `generic_latch_8` |
 | raster position | `video_timing` | line 9, pixel 9, divider 4 | yes, `ss_line`/`ss_hcnt`/`ss_div`; the file's clock is pixel * 9 + divider | the screen |
 
 ## Chip state
 
 | Chip | Module | Addressable? | Tier | Note |
 |---|---|---|---|---|
-| Z80 | T80 (Phase 3) | yes: `REG` out, `DIR`/`DIRSet` in | exact | MAME's section is already in the file |
+| Z80 | T80se in `toaplan_sound`/`semicom_sound` | yes: `REG` out, `DIR`/`DIRSet` in | exact | MAME's section is already in the file |
 | YM3812 | jtopl2 | no | 1: register replay | MAME's internals are not reachable from Lua either |
 | YM2151 | jt51 | no | 1: register replay | |
 | M6295 | jt6295 | partly | 1 | |

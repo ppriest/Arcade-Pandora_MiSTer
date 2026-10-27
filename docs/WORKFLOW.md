@@ -35,10 +35,10 @@ that adds the module or the macro.
 ### Two revisions from one source
 
 `<Name>_stp` is the instrumented revision and `<Name>` the release one. The only difference between
-the two `.qsf` files is the last block: `VERILOG_MACRO "DEBUG_ISSP=1"`. With it the ISSP probes are
-built and the OSD Debug page is visible; without it the probes, their ring buffer, their counters and
-the menu page compile out. No `#ifdef` in the middle of the logic — the guard sits around the probe
-instances in the top-level `.sv` and around one `localparam` that drives `status_menumask`.
+the two `.qsf` files is one line, `VERILOG_MACRO "DEBUG_ISSP=1"`. In this core the macro only drives
+one `localparam` that feeds `status_menumask`; there are no probe instances yet. When they land the
+guard sits around the probe instances in the top-level `.sv` and around that `localparam`, never in
+the middle of the logic, so the release build compiles them out.
 
 ```
 python scripts/build_staged.py                  # <Name>_stp, the default
@@ -186,6 +186,8 @@ Rules that come with the pattern:
 
 ## 5. The JTAG probe
 
+This core has no probe module yet: `Pandora_stp.qsf` defines `DEBUG_ISSP`, which currently only
+drives a menumask bit no OSD line uses. The pattern when one lands is the sibling cores'
 `rtl/debug/issp_probe.sv` — In-System Sources and Probes, read and poked over JTAG with
 `quartus_stp -t scripts/read_issp.tcl`, under the section 2 lock.
 
@@ -219,8 +221,8 @@ cannot.
 
 ## 6. Counters and the trace ring
 
-`rtl/debug/debug_counter.sv` and `rtl/debug/debug_tracer.sv`, carried over with their design
-rationale in the file headers:
+None in this core yet (section 5). The sibling cores' `rtl/debug/debug_tracer.sv` and their ISSP
+counters are the pattern, with the design rationale in their headers:
 
 - **No reset port at all.** Quartus powers registers to zero at configuration, so a counter with no
   reset shows what happened since the FPGA was programmed. A counter cleared by the reset under
@@ -488,4 +490,5 @@ each **done** as it lands.
 | `sdram_pattern_test.py`, `sdram_dump_check.py` | known-pattern SDRAM test through the real download path | Seta, Fuuki |
 | `regen_mmr.sh --check` | drift check for generated register-map modules, where used | GX |
 
-And from `rtl/debug/`: `issp_probe.sv`, `debug_tracer.sv`, `debug_counter.sv`, `pause_control.sv`.
+And from the sibling cores' `rtl/debug/`: `issp_probe.sv`, `debug_tracer.sv`; this core has
+neither yet.

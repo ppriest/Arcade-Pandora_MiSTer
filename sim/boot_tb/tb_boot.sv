@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 `timescale 1ns/1ps
 // A set's boot on maincpu, against MAME. Program ROM from sim/boot_tb/gen_fixture.py; RAMs are
 // block-RAM models; inputs held at the values MAME's CPU read (debug/<set>-boot/<set>_boot.trace);

@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Log the first N main-CPU bus accesses from reset, as ground truth for the
 -- RTL's boot trace (scripts/compare_boot_trace.py). Driven by
 -- scripts/mame_boot_trace.py:

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Report the worst setup-failing paths on the main core clock domain, from the
 # existing post-fit netlist (no re-fit, no placement change). Run from the
 # directory holding the database:

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Fixtures for sim/video_tb from a MAME capture (scripts/mame_vcapture.py).
 
     python sim/video_tb/gen_fixture.py debug/snowbros-v/00700      # from the repository root

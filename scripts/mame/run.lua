@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Bootstrap that makes Lua failures VISIBLE to the calling script.
 --
 -- MAME reports a broken autoboot script with a modal dialog. Headless, that is

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 `timescale 1ns/1ps
 // snowbros_video against MAME: one frame from a captured sprite list and palette.
 //

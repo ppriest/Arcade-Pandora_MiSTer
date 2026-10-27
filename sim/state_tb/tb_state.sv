@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 `timescale 1ns/1ps
 // maincpu from a state file, against MAME (docs/STATE.md).
 //

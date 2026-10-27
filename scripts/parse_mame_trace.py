@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Turn a MAME debugger trace into an expected FETCH list for the testbench.
 
     python scripts/parse_mame_trace.py <trace.tr> <out.txt> [--past-loops]

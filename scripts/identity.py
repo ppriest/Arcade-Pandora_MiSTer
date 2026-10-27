@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Who a probe reading belongs to: core, build and set, from the device itself.
 
 Several sessions share one MiSTer and one USB-Blaster, so the core that answers a

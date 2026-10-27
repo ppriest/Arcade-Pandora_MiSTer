@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Read the core's ISSP probes over JTAG, holding the machine-wide hwlock.
 
     python scripts/read_issp.py                # decode the first instance

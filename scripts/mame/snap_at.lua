@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 local n = tonumber(os.getenv("CORE_SNAP_FRAME") or "2700")
 local out = os.getenv("CORE_SNAP_OUT")
 local f = 0

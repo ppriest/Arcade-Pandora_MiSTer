@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Fixtures for sim/sound_tb from a set's .mra image and its MAME sound trace.
 
     python sim/sound_tb/gen_fixture.py snowbros     # from the repository root

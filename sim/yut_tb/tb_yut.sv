@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 `timescale 1ns/1ps
 // rtl/sound/yutnori_sound.sv against MAME's high-level emulation: the 68000's command bytes
 // replayed at MAME's times (sim/yut_tb/cmds.txt, from debug/yutnori-snd/mame.txt), line 0 at

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 `timescale 1ns/1ps
 // snowbros_top end to end: the set's image through the real download path (ioctl, sdram_download,
 // dl_xform, the arbiter, sdram.sv) into the SDRAM chip model, then the board out of reset.

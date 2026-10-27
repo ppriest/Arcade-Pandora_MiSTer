@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Extract a set's ROM_START records for one region straight from the MAME driver.
 
     python scripts/extract_romstart.py --emit           # the maincpu SETS table

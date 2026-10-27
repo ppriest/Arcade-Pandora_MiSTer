@@ -269,29 +269,12 @@ Logic, at 46%, is the most used.
 ## AI Attestation
 
 This core is being developed with heavy use of a frontier coding assistant, which wrote the code
-and the benches under the author's direction. The author made the hardware checks: every set's
-picture and sound on the board.
+and the benches under the author's direction.
 
 ## Verification
 
 Not PCB-validated. MAME is the accuracy reference, with its own acknowledged uncertainties noted
 where they matter.
-
-* `.mra` files generated from the driver's `ROM_START`; each set's image, rebuilt from the zips,
-  identical to `ROM_START`'s.
-* Graphics: the Pandora software model pixel-exact against MAME, 35 of 35 frames of the first
-  sets, 33 of 33 frames of the ten later ones and 9 of 9 of sutjarod, gwasu and yutnori; the RTL line engine against the model in
-  `sim/video_tb`.
-* Download: the SDRAM after the download path, with every ROM transform, against an independent
-  Python image, 0 words differ for every set; the `protdata` copy, 0 of 256 words differ.
-* 68000, whole core through the SDRAM model: snowbros' boot matches MAME on 12,702 of 12,702
-  writes; finalttr's on 12,222 writes, up to an interrupt-timing divergence.
-* 68000 from MAME save states: writes and I/O reads match until an interrupt lands at a different
-  instruction; five frames on, toppyrap, pzlbreak, moremore, moremorp and 4in1boot hold MAME's
-  state but for one counter word.
-* Sound: the chip writes against MAME's, in order: snowbros 29,127 of 29,127 (2.85 s), hyperpac
-  1,541 of 1,541 (900 ms), finalttr 2,561 of 2,561 (700 ms). yutnori against MAME's voice
-  states: 44 of 44 sample starts and 42 of 42 stops over 41 s.
 
 ## Acknowledgements
 
@@ -323,8 +306,9 @@ Standard [Template_MiSTer](https://github.com/MiSTer-devel/Template_MiSTer) stru
 
 ## License
 
-GPL-3.0 (see `LICENSE`). Imported components keep their own licences; `rtl/PROVENANCE.md` and
-each vendored directory's `PROVENANCE.md` have the detail.
+GPL-3.0-or-later (see `LICENSE`). Imported components keep their own licences; `THIRD-PARTY.md`
+records the obligations, while `rtl/PROVENANCE.md` and available component provenance files record
+their origins and local changes.
 
 Game ROMs contain copyrighted material and are not included. Obtaining them is your
 responsibility.

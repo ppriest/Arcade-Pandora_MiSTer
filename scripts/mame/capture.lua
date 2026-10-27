@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Capture video/machine state from MAME at a chosen frame. Driven by
 -- scripts/mame_capture.py, which passes scripts/mame/regions.json as:
 --

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 // sdram_chip_model.sv with the full 13-bit row: 16M words, the whole 32 MB, where the shared
 // model folds rows to 8 bits and aliases regions more than 128K words apart. mem[] is indexed
 // by the controller's word address ({bank, row, col} = word_addr[23:0]), so a bench can load a

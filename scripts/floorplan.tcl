@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Dump every placed atom of a compiled revision: type, location, full hierarchical name.
 # Read-only on the post-fit netlist; no re-fit. Run from the directory holding the
 # database (build/ for build_staged.py), through scripts/floorplan.py:

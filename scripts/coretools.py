@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """What every script in this directory needs to know about its core.
 
 The core root is the parent of this scripts/ directory (or CORE_ROOT). From it:

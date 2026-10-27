@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Keep JTAG and Quartus off this machine at the same time, and give JTAG priority.
 
 Shared by every MiSTer core on this PC -- one USB-Blaster, one Quartus, and

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Compile the core IN-TREE and REPORT THE TIMING, not just the exit code.
 #
 #     scripts/build.sh            # full compile

@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Capture the machine's state at entries of the level-4 interrupt handler, for
 -- scripts/mame_state.py. The first fetch of the handler is an instruction boundary on any
 -- 68000, MAME's or the RTL's: the registers are the interrupted program's, SR and A7 are the

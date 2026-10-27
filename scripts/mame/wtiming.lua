@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Count a set's video RAM writes by scanline, for scripts/write_timing.py.
 --
 --   CORE_CPU, CORE_SPACE  the CPU and address space to tap (regions.json)

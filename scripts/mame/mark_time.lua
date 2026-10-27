@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Record MAME's emulated time at two points in a game's program, for a CPI
 -- measurement against the RTL (Phase 0). All settings required:
 --

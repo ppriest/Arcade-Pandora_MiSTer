@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Video captures for scripts/render_model.py, driven by scripts/mame_vcapture.py.
 --
 --   VC_OUT     output directory; one subdirectory per frame

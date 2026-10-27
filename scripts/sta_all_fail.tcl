@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Every failing setup endpoint on the main core clock, summary form, from the
 # existing post-fit netlist. Run from the directory holding the database:
 #   quartus_sta -t scripts/sta_all_fail.tcl <revision>

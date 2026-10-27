@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Read the core's JTAG probe, guarded against a concurrent Quartus build.
 
     python scripts/probe.py                    # read every field of the default instance

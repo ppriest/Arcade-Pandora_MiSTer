@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Drive the MiSTer over its Remote API: launch a game, grab a screenshot.
 
     python scripts/hw.py launch "Game Title (set 1)"     # .mra name or remote path

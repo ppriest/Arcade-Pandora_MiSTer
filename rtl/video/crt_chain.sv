@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 // CRT Adjust: native raster -> crt_vsize (V-Size) -> crt_adjust (H-Position,
 // V-Shift, H-Size) -> arcade_video. Passthrough while `active` is low.
 module crt_chain #(

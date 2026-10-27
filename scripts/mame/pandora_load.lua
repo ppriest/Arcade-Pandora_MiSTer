@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Pandora line load, for docs/sprite_load_mame.txt. Per frame, resolves the 512 entries
 -- with the relative chaining of kan_pand.cpp draw() and counts the entries overlapping each
 -- visible line (16..239) with sx in -15..255; writes the per-frame maximum as a histogram.

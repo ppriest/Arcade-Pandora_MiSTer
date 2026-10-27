@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Refuse to publish .mra files that need a core not released in the same push.
 # Installed by: git config core.hooksPath scripts/hooks   (new_core.py does it)
 root=$(git rev-parse --show-toplevel) || exit 1

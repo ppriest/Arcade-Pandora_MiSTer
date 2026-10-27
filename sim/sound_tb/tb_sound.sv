@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 `timescale 1ns/1ps
 // A sound board against MAME: the 68000's latch writes replayed at MAME's times
 // (sim/sound_tb/latch.txt, from scripts/mame_sndtrace.py), the Z80 program and the samples from

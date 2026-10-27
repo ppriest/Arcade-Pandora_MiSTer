@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """sim/yut_tb's starts and stops against MAME's (debug/yutnori-snd/{mame,rtl}.txt).
 
     python sim/yut_tb/compare.py

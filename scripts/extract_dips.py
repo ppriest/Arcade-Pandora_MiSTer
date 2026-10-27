@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Extract a game's DIP switches from the MAME driver's INPUT_PORTS_START blocks.
 
     python scripts/extract_dips.py <set>

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Behavioral stand-in for a real MT48LC16M16 SDR SDRAM chip, used only in
 // simulation. Unlike a black-box latency stub, this decodes the actual
 // {SDRAM_nRAS,SDRAM_nCAS,SDRAM_nWE} command encoding (ACTIVE/READ/WRITE/

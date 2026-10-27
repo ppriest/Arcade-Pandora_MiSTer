@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Seed a MAME configuration file with DIP switch settings, then exit cleanly.
 --
 -- Driven by scripts/mame_capture.py as PASS 1 of a --dip capture. MAME writes

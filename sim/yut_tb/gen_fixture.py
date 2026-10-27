@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Fixtures for sim/yut_tb: yutnori's two sample ROMs and MAME's command bytes.
 
     python sim/yut_tb/gen_fixture.py      # from the repository root

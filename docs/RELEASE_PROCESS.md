@@ -6,7 +6,7 @@ something other people run.
 | | `<Name>_stp` (debug) | `<Name>` (release) |
 | --- | --- | --- |
 | Built by | `build_staged.py` (default) | `build_staged.py --rev <Name>` |
-| Contains | ISSP probes, debug tracer, Debug OSD page | none of it — compiled out |
+| Contains | `DEBUG_ISSP`; no probe or tracer in this core yet | none of it — compiled out |
 | Timing | **may ship with negative slack** | **must close timing** |
 | Goes to | our own DE10-nano | `releases/`, other people's hardware |
 
@@ -57,7 +57,7 @@ Steps for a release:
    shows this build's date and the right MRA count. Files in `unsupported/` and `_dev/` are not
    published, so keep work in progress there.
 
-**Current state:** `Arcade-Pandora_20261025.rbf`, the release revision of `3743699` (seed default): every clock meets timing (`clk_sys` +4.031 ns); 18 `.mra` files and 12 clones in `_alternatives`; not yet pushed.
+**Current state:** `Arcade-Pandora_20261025.rbf`, the release revision of `3743699` (seed default): every clock meets timing (`clk_sys` +4.031 ns); 17 `.mra` files and 6 clones in `_alternatives`, with Snow Bros. and its five clones under `unsupported/`; pushed.
 
 ## Submitting the core upstream
 
